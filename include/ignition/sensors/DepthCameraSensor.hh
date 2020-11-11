@@ -24,11 +24,17 @@
 #include <sdf/sdf.hh>
 
 #include <ignition/common/Event.hh>
-
-#include <ignition/common/PluginMacros.hh>
+#include <ignition/common/SuppressWarning.hh>
 #include <ignition/common/Time.hh>
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4005)
+#endif
 #include <ignition/msgs.hh>
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 #include <ignition/rendering/DepthCamera.hh>
 
@@ -158,9 +164,12 @@ namespace ignition
       private: void OnSceneChange(ignition::rendering::ScenePtr /*_scene*/)
               { }
 
+
+      IGN_COMMON_WARN_IGNORE__DLL_INTERFACE_MISSING
       /// \brief Data pointer for private data
       /// \internal
       private: std::unique_ptr<DepthCameraSensorPrivate> dataPtr;
+      IGN_COMMON_WARN_RESUME__DLL_INTERFACE_MISSING
     };
     }
   }

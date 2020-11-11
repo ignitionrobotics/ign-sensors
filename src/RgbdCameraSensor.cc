@@ -15,12 +15,21 @@
  *
 */
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4005)
+#endif
 #include <ignition/msgs/image.pb.h>
 #include <ignition/msgs/pointcloud_packed.pb.h>
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 #include <ignition/common/Image.hh>
 #include <ignition/common/Profiler.hh>
 #include <ignition/math/Helpers.hh>
+
+#include <ignition/plugin/Register.hh>
 
 #include <ignition/rendering/Camera.hh>
 #include <ignition/rendering/DepthCamera.hh>
@@ -154,6 +163,14 @@ RgbdCameraSensor::~RgbdCameraSensor()
 bool RgbdCameraSensor::Init()
 {
   return this->Sensor::Init();
+}
+
+//////////////////////////////////////////////////
+bool RgbdCameraSensor::Load(sdf::ElementPtr _sdf)
+{
+  sdf::Sensor sdfSensor;
+  sdfSensor.Load(_sdf);
+  return this->Load(sdfSensor);
 }
 
 //////////////////////////////////////////////////

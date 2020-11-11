@@ -22,6 +22,7 @@
 #include <type_traits>
 #include <vector>
 #include <sdf/sdf.hh>
+#include <ignition/common/SuppressWarning.hh>
 #include <ignition/common/Time.hh>
 #include <ignition/common/Console.hh>
 #include <ignition/sensors/config.hh>
@@ -153,6 +154,14 @@ namespace ignition
       /// is returned on erro.
       public: ignition::sensors::SensorId CreateSensor(sdf::ElementPtr _sdf);
 
+      /// \brief Add a sensor from a sensor instance.
+      /// \sa Sensor()
+      /// \param[in] _sensor pointer to the sensor
+      /// \return A sensor id that refers to the created sensor. NO_SENSOR
+      /// is returned on error.
+      public: ignition::sensors::SensorId AddSensor(
+        std::unique_ptr<sensors::Sensor> _sensor);
+
       /// \brief Create a sensor from SDF without a known sensor type.
       ///
       ///   This creates sensors by looking at the given sdf element.
@@ -207,8 +216,10 @@ namespace ignition
       private: ignition::sensors::SensorId LoadSensorPlugin(
                    const std::string &_filename, sdf::ElementPtr _sdf);
 
+      IGN_COMMON_WARN_IGNORE__DLL_INTERFACE_MISSING
       /// \brief private data pointer
       private: std::unique_ptr<ManagerPrivate> dataPtr;
+      IGN_COMMON_WARN_RESUME__DLL_INTERFACE_MISSING
     };
     }
   }

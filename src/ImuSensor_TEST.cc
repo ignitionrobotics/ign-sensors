@@ -18,11 +18,18 @@
 #include <sdf/sdf.hh>
 
 #include <ignition/math/Helpers.hh>
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4005)
+#endif
 #include <ignition/msgs.hh>
-#include <ignition/sensors/Export.hh>
-#include <ignition/sensors/Manager.hh>
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
-#include <ignition/sensors/ImuSensor.hh>
+#include "ignition/sensors/Export.hh"
+#include "ignition/sensors/ImuSensor.hh"
+#include "ignition/sensors/Manager.hh"
 
 using namespace ignition;
 
@@ -177,9 +184,6 @@ sdf::ElementPtr ImuSensorToSDF(const std::string &name, double update_rate,
 //////////////////////////////////////////////////
 TEST(ImuSensor_TEST, CreateImuSensor)
 {
-  // Create a sensor manager
-  ignition::sensors::Manager mgr;
-
   const std::string name = "TestImu";
   const std::string topic = "/ignition/sensors/test/imu";
   const double update_rate = 100;
@@ -191,19 +195,14 @@ TEST(ImuSensor_TEST, CreateImuSensor)
   sdf::ElementPtr imuSDF = ImuSensorToSDF(name, update_rate, topic,
     accelNoise, gyroNoise, always_on, visualize);
 
-  // Create an ImuSensor
-  auto sensor = mgr.CreateSensor<ignition::sensors::ImuSensor>(imuSDF);
-
-  // Make sure the above dynamic cast worked.
-  EXPECT_TRUE(sensor != nullptr);
+  std::unique_ptr<ignition::sensors::ImuSensor> sensor =
+    std::make_unique<ignition::sensors::ImuSensor>();
+  EXPECT_TRUE(sensor->Load(imuSDF));
 }
 
 //////////////////////////////////////////////////
 TEST(ImuSensor_TEST, ComputeNoise)
 {
-  // Create a sensor manager
-  ignition::sensors::Manager mgr;
-
   sdf::ElementPtr imuSDF, imuSDF_truth;
 
   {
@@ -235,10 +234,13 @@ TEST(ImuSensor_TEST, ComputeNoise)
       accelNoise, gyroNoise, always_on, visualize);
   }
 
-  // Create an ImuSensor
-  auto sensor_truth = mgr.CreateSensor<ignition::sensors::ImuSensor>(
-      imuSDF_truth);
-  auto sensor = mgr.CreateSensor<ignition::sensors::ImuSensor>(imuSDF);
+  std::unique_ptr<ignition::sensors::ImuSensor> sensor_truth =
+    std::make_unique<ignition::sensors::ImuSensor>();
+  EXPECT_TRUE(sensor_truth->Load(imuSDF_truth));
+
+  std::unique_ptr<ignition::sensors::ImuSensor> sensor =
+    std::make_unique<ignition::sensors::ImuSensor>();
+  EXPECT_TRUE(sensor->Load(imuSDF));
 
   // Make sure the above dynamic cast worked.
   EXPECT_TRUE(sensor != nullptr);
@@ -301,7 +303,3 @@ int main(int argc, char **argv)
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
-
-
-
-

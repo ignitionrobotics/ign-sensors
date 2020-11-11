@@ -15,9 +15,19 @@
  *
 */
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4005)
+#endif
 #include <ignition/msgs/fluid_pressure.pb.h>
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
+
 #include <ignition/common/Profiler.hh>
 #include <ignition/transport/Node.hh>
+
+#include <ignition/plugin/Register.hh>
 
 #include "ignition/sensors/GaussianNoiseModel.hh"
 #include "ignition/sensors/Noise.hh"

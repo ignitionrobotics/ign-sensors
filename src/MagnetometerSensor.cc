@@ -15,15 +15,24 @@
  *
 */
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4005)
+#endif
 #include <ignition/msgs/magnetometer.pb.h>
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
+
 #include <ignition/common/Profiler.hh>
+#include <ignition/plugin/Register.hh>
 #include <ignition/transport/Node.hh>
 #include <sdf/Magnetometer.hh>
 
+#include "ignition/sensors/MagnetometerSensor.hh"
 #include "ignition/sensors/Noise.hh"
 #include "ignition/sensors/SensorFactory.hh"
 #include "ignition/sensors/SensorTypes.hh"
-#include "ignition/sensors/MagnetometerSensor.hh"
 
 using namespace ignition;
 using namespace sensors;

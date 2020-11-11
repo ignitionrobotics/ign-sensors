@@ -14,8 +14,14 @@
  * limitations under the License.
  *
 */
-
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4005)
+#endif
 #include <ignition/msgs/pointcloud_packed.pb.h>
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 #include <mutex>
 
@@ -26,6 +32,8 @@
 
 #include <ignition/math/Angle.hh>
 #include <ignition/math/Helpers.hh>
+
+#include <ignition/plugin/Register.hh>
 
 #include <ignition/transport/Node.hh>
 
@@ -160,7 +168,7 @@ bool DepthCameraSensorPrivate::ConvertDepthToImage(
   double factor = 255 / maxDepth;
   for (unsigned int j = 0; j < _height * _width; ++j)
   {
-    unsigned char d = 255 - (_data[j] * factor);
+    unsigned char d = static_cast<unsigned char>(255 - (_data[j] * factor));
     _imageBuffer[j * 3] = d;
     _imageBuffer[j * 3 + 1] = d;
     _imageBuffer[j * 3 + 2] = d;

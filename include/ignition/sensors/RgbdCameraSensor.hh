@@ -21,6 +21,7 @@
 
 #include <sdf/sdf.hh>
 
+#include <ignition/common/SuppressWarning.hh>
 #include <ignition/common/Time.hh>
 
 #include "ignition/sensors/CameraSensor.hh"
@@ -62,6 +63,11 @@ namespace ignition
       /// \return true if loading was successful
       public: virtual bool Load(const sdf::Sensor &_sdf) override;
 
+      /// \brief Load the sensor with SDF parameters.
+      /// \param[in] _sdf SDF Sensor parameters.
+      /// \return true if loading was successful
+      public: virtual bool Load(sdf::ElementPtr _sdf) override;
+
       /// \brief Initialize values in the sensor
       /// \return True on success
       public: virtual bool Init() override;
@@ -95,9 +101,11 @@ namespace ignition
       /// \return True on success.
       private: bool CreateCameras();
 
+      IGN_COMMON_WARN_IGNORE__DLL_INTERFACE_MISSING
       /// \brief Data pointer for private data
       /// \internal
       private: std::unique_ptr<RgbdCameraSensorPrivate> dataPtr;
+      IGN_COMMON_WARN_RESUME__DLL_INTERFACE_MISSING
     };
     }
   }
