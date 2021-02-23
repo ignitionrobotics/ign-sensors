@@ -69,6 +69,7 @@ std::shared_ptr<SensorPlugin> SensorFactory::LoadSensorPlugin(
 {
   std::string fullPath =
       this->dataPtr->systemPaths.FindSharedLibrary(_filename);
+
   if (fullPath.empty())
   {
     ignerr << "Unable to find sensor plugin path for [" << _filename << "]\n";
