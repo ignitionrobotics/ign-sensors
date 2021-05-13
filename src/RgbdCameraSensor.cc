@@ -42,6 +42,8 @@
 #pragma warning(pop)
 #endif
 
+// This plugin loads another plugin, so it shouldn't include Register.hh
+#include <ignition/plugin/RegisterMore.hh>
 #include <ignition/transport/Node.hh>
 
 #include <sdf/Sensor.hh>
@@ -609,4 +611,9 @@ unsigned int RgbdCameraSensor::ImageHeight() const
   return this->dataPtr->depthCamera->ImageHeight();
 }
 
-IGN_SENSORS_REGISTER_SENSOR(RgbdCameraSensor)
+IGNITION_ADD_PLUGIN(
+    ignition::sensors::SensorTypePlugin<RgbdCameraSensor>,
+    ignition::sensors::SensorPlugin)
+IGNITION_ADD_PLUGIN_ALIAS(
+    ignition::sensors::SensorTypePlugin<RgbdCameraSensor>,
+    "rgbd_camera")
